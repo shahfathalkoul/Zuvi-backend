@@ -1,0 +1,51 @@
+Let me help analyze the equations and spot some optimizations.
+
+When we solve |b₁ - b₂| < 2L and b₁ + b₂ > 2L:
+
+Case 1: If b₁ > b₂
+- Then b₁ - b₂ < 2L
+- And b₁ + b₂ > 2L
+- Adding these: 2b₁ > 4L
+- Therefore b₁ > 2L
+
+Case 2: If b₂ > b₁
+- Then b₂ - b₁ < 2L
+- And b₁ + b₂ > 2L
+- Adding these: 2b₂ > 4L
+- Therefore b₂ > 2L
+
+This gives us a key insight: At least one of the bases must be greater than twice the leg length!
+
+Here's how we can use this in our code:
+
+```cpp
+// After finding a pair of equal sticks for legs (L)
+int legLength = Lvalues[0];
+int twiceL = 2 * legLength;
+
+// We only need to consider values > 2L for at least one base
+for(int i = 0; i < n; i++) {
+    if(a[i] == legLength) continue;  // skip leg values
+    
+    // If this potential base > 2L
+    if(a[i] > twiceL) {
+        // Look for another base
+        for(int j = i + 1; j < n; j++) {
+            if(a[j] == legLength) continue;
+            
+            // Check both conditions
+            if(abs(a[i] - a[j]) < twiceL && a[i] + a[j] > twiceL) {
+                cout << a[i] << " " << a[j] << " " << legLength << " " << legLength << endl;
+                return;
+            }
+        }
+    }
+}
+```
+
+This optimization helps because:
+1. We can skip checking pairs where neither value is > 2L
+2. We need to check fewer combinations
+3. It's mathematically guaranteed to find all valid solutions
+
+Would you like me to provide the complete optimized solution with this insight incorporated?
